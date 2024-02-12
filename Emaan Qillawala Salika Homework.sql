@@ -22,7 +22,7 @@ SELECT name AS category_name, COUNT(rental_id) AS rental_count FROM category, re
 SELECT name AS category_name, AVG(rental_rate) AS avg_rental_cost FROM category, film, film_category WHERE category.category_id = film_category.category_id AND film_category.film_id = film.film_id GROUP BY category_name;
 
 -- 8. List of Films Not Rented in the Last Month (which will be all of them)
-SELECT title AS film_title, MAX(rental_date) AS last_rental_date FROM film, rental, inventory WHERE rental.inventory_id = inventory.inventory_id AND inventory.film_id = film.film_id AND rental_date < '2024-01-09 12:00:00' GROUP BY film_title;
+SELECT title AS film_title, MAX(rental_date) AS last_rental_date FROM film LEFT JOIN inventory ON inventory.film_id = film.film_id LEFT JOIN rental ON rental.inventory_id = inventory.inventory_id GROUP BY film_title;
 
 -- 9. Customer Spending on Rentals
 SELECT first_name, last_name, SUM(amount) AS total_paid FROM customer, payment WHERE customer.customer_id = payment.customer_id GROUP BY first_name, last_name;
